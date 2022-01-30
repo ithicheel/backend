@@ -19,5 +19,5 @@ npm start
 ```
 
 ```
-THANKS BRO
+GOOD LUCK
 ```
