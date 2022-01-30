@@ -9,7 +9,7 @@ const {
   createProduct,
 } = require('../controller/product');
 
-router.route('/').get(checkToken, getProducts).post(createProduct);
-router.route('/:id').get(getProduct).put(updateProduct).delete(deleteProduct);
+router.route('/').get(checkToken, getProducts).post(checkToken, createProduct);
+router.route('/:id').get(checkToken, getProduct).put(checkToken, updateProduct).delete(checkToken, deleteProduct);
 
 module.exports = router;

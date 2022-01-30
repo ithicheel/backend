@@ -1,20 +1,36 @@
 // Controller
-const { getProducts, getProduct, createProduct, updateProduct, deleteProduct } = require('../model/product.js')
+const { getProducts, getProduct, createProduct, updateProduct, deleteProduct, getProductByCate_id } = require('../model/product.js')
 
 exports.getProducts = (req, res, next) => {
-  getProducts(req.body, (err, results) => {
-    if (results.success) {
-      res.status(200).json({
-        success: results.success,
-        data: results.data.rows,
-      })
-    } else {
-      res.status(500).json({
-        success: results.success,
-        error: results.data.err.sqlMessage,
-      })
-    }
-  })
+  if (req.query.cate_id) {
+    getProductByCate_id(req, (err, results) => {
+      if (results.success) {
+        res.status(200).json({
+          success: results.success,
+          data: results.data.rows,
+        })
+      } else {
+        res.status(500).json({
+          success: results.success,
+          error: results.data.err.sqlMessage,
+        })
+      }
+    })
+  } else {
+    getProducts(req.body, (err, results) => {
+      if (results.success) {
+        res.status(200).json({
+          success: results.success,
+          data: results.data.rows,
+        })
+      } else {
+        res.status(500).json({
+          success: results.success,
+          error: results.data.err.sqlMessage,
+        })
+      }
+    })
+  }
 }
 exports.getProduct = (req, res, next) => {
   getProduct(req, (err, results) => {

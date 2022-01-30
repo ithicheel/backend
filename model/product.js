@@ -3,8 +3,22 @@ const mysql = require('mysql');
 const shortid = require("shortid");
 const uniqid = require("uniqid");
 
+
 exports.getProducts = async (data, callBack) => {
     let sql = `select * from start_backend.product`
+    const checke = await query(sql);
+    return callBack(null, checke);
+}
+exports.getProductByCate_id = async (data, callBack) => {
+    let sql = `
+        select *
+        from start_backend.product
+        where  product_cate_id = ?;
+    `
+    let inserts = [
+        data.query.cate_id,
+    ]
+    sql = mysql.format(sql, inserts);
     const checke = await query(sql);
     return callBack(null, checke);
 }
