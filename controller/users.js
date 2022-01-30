@@ -1,7 +1,7 @@
-// 
+//
 const { createUser, getUserByEmail } = require('../model/users');
 const { hashSync, genSaltSync, compareSync } = require("bcrypt");
-const { sign } = require("jsonwebtoken");
+const { sign, verify } = require("jsonwebtoken");
 exports.getUser = (req, res, next) => {
     res.status(200).json({
         success: true,
