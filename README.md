@@ -1,9 +1,13 @@
-# BackEnd template
+# backend
 
 ## Getting started
 
 ```
-cd backend-template
+git clone https://github.com/ithicheel/backend.git
+```
+
+```
+cd backend
 ```
 
 ```
@@ -11,7 +15,7 @@ npm install
 ```
 
 ```
-npm run dev
+npm start
 ```
 
 ```
