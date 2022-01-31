@@ -59,25 +59,39 @@ exports.loginUser = (req, res, next) => {
         });
     }
     getUserByEmail(body.email, (err, results) => {
-        const result = compareSync(body.password, results.data.rows[0].user_pass);
-        if (result) {
-            results.data.rows[0].user_pass = undefined;
-            const jsontoken = sign({ result: results }, process.env.JWT_KEY, {
-                expiresIn: process.env.JWT_EXPIRESIN,
-            });
-            const cookieOptions = {
-                expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
-            };
-            res.status(200).cookie("token", jsontoken, cookieOptions).json({
-                success: true,
-                message: "Нэвтэрлээ",
-                token: jsontoken,
-                data: results.data.rows[0],
-            });
+        if (results.success) {
+            if (!(results.data.rows[0] == null)) {
+                const result = compareSync(body.password, results.data.rows[0].user_pass);
+                if (result) {
+                    results.data.rows[0].user_pass = undefined;
+                    const jsontoken = sign({ result: results }, process.env.JWT_KEY, {
+                        expiresIn: process.env.JWT_EXPIRESIN,
+                    });
+                    const cookieOptions = {
+                        expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
+                    };
+                    res.status(200).cookie("token", jsontoken, cookieOptions).json({
+                        success: true,
+                        message: "Нэвтэрлээ",
+                        token: jsontoken,
+                        data: results.data.rows[0],
+                    });
+                } else {
+                    return res.status(200).json({
+                        success: false,
+                        message: "Нууц үг таарсангүй...",
+                    });
+                }
+            } else {
+                return res.status(200).json({
+                    success: false,
+                    message: "И-майл буруу байна...",
+                });
+            }
         } else {
-            return res.status(200).json({
-                success: false,
-                message: "Нууц үг таарсангүй ",
+            res.status(200).json({
+                success: results.success,
+                data: results.data.err.sqlMessage,
             });
         }
     })
